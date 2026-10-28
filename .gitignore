@@ -6,3 +6,6 @@ coverage/
 .env.*
 .DS_Store
 Thumbs.db
+
+# Instalacao local do proprio kit (copia de kit/), nao versionada
+.claude/

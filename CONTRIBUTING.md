@@ -42,3 +42,11 @@ Depois de adicionar, rode `npm run build && npm run validate:kit`.
 - Uma mudança lógica por PR, com testes.
 - Commits no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/).
 - O CI precisa estar verde.
+
+## Revisão
+
+- Todo PR passa pela revisão do mantenedor antes do merge, além do CI.
+- Mudanças em `kit/` são revisadas com cuidado extra: o conteúdo vira instrução para a IA de quem instala o kit. PRs com instruções escondidas, comandos destrutivos ou que enfraqueçam salvaguardas são fechados.
+- Para propostas maiores, abra uma issue antes para alinhar a ideia.
+
+Ao participar, você concorda com o [código de conduta](CODE_OF_CONDUCT.md). Falhas de segurança seguem a [política de segurança](SECURITY.md).

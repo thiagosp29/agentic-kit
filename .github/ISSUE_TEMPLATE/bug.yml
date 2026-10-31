@@ -1,0 +1,27 @@
+name: Bug
+description: Algo na CLI ou no kit não funciona como deveria.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: O que aconteceu
+      description: Comando executado, saída obtida e o que você esperava.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Como reproduzir
+      placeholder: |
+        1. npx agentic-kit install --dir ...
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Ambiente
+      placeholder: 'Node 22, Windows 11, agentic-kit 0.1.0'
+    validations:
+      required: true

@@ -42,6 +42,7 @@ describe('loadKit', () => {
     ['nome fora de kebab-case', manifest('Architect', 'Desc.'), /kebab-case/],
     ['descrição vazia', manifest('architect', ''), /description/],
     ['sem frontmatter', '# Architect\n', /kebab-case/],
+    ['descrição com mais de 1024 caracteres', manifest('architect', 'a'.repeat(1025)), /até 1024/],
   ])('reporta problema quando o manifesto tem %s', async (_case, content, message) => {
     const fs = new MemoryFileSystem({ [join(KIT_ROOT, 'agents', 'architect.md')]: content });
 
@@ -49,6 +50,25 @@ describe('loadKit', () => {
 
     expect(kit.items).toEqual([]);
     expect(problems).toEqual([{ file: 'agents/architect.md', message: expect.stringMatching(message) }]);
+  });
+
+  it('aceita descrição com exatamente 1024 caracteres', async () => {
+    const fs = new MemoryFileSystem({
+      [join(KIT_ROOT, 'agents', 'architect.md')]: manifest('architect', 'a'.repeat(1024)),
+    });
+
+    const { problems } = await loadKit(KIT_ROOT, fs);
+
+    expect(problems).toEqual([]);
+  });
+
+  it('reporta nome com mais de 64 caracteres', async () => {
+    const name = 'a'.repeat(65);
+    const fs = new MemoryFileSystem({ [join(KIT_ROOT, 'agents', `${name}.md`)]: manifest(name, 'Desc.') });
+
+    const { problems } = await loadKit(KIT_ROOT, fs);
+
+    expect(problems).toEqual([{ file: `agents/${name}.md`, message: expect.stringMatching(/até 64/) }]);
   });
 
   it('reporta skill sem SKILL.md', async () => {

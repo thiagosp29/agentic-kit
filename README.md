@@ -9,7 +9,7 @@ Feito com foco no **Claude Code**, mas funciona com **qualquer IA** que lê `AGE
 | Tipo          | Itens                                                                                    | Para quê                                             |
 | ------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | **Knowledge** | `clean-code`, `solid`, `clean-architecture`, `testing`, `error-handling`, `git-workflow` | Referências que a IA consulta antes de decidir       |
-| **Skills**    | `code-review`, `write-tests`, `refactor`, `adr`, `commit-message`                        | Procedimentos passo a passo para tarefas específicas |
+| **Skills**    | `code-review`, `write-tests`, `debug`, `refactor`, `adr`, `commit-message`               | Procedimentos passo a passo para tarefas específicas |
 | **Agents**    | `code-reviewer`, `test-engineer`, `architect`                                            | Subagentes especializados, com ferramentas limitadas |
 
 Além disso, a instalação adiciona ao `CLAUDE.md` / `AGENTS.md` um bloco com os princípios de trabalho e um índice de tudo o que foi instalado.
@@ -37,6 +37,9 @@ agentic-kit install --target claude --global
 # Para qualquer IA compatível com AGENTS.md
 agentic-kit install --target agents
 
+# Para os dois de uma vez
+agentic-kit install --target claude,agents
+
 # Ver o que seria feito, sem escrever nada
 agentic-kit install --target claude --dry-run
 ```
@@ -45,7 +48,9 @@ agentic-kit install --target claude --dry-run
 | ----------------- | ---------------------------------------------------------- | --------------------- |
 | `claude`          | `.claude/skills/`, `.claude/agents/`, `.claude/knowledge/` | `CLAUDE.md`           |
 | `claude --global` | `~/.claude/...`                                            | `~/.claude/CLAUDE.md` |
-| `agents`          | `.ai/skills/`, `.ai/agents/`, `.ai/knowledge/`             | `AGENTS.md`           |
+| `agents`          | `.agents/skills/`, `.agents/agents/`, `.agents/knowledge/` | `AGENTS.md`           |
+
+Codex, GitHub Copilot e Cursor encontram as skills em `.agents/skills/` sem configuração. Versões anteriores do kit instalavam em `.ai/`: ao reinstalar, a CLI avisa se essa pasta existir, para você conferir e apagar.
 
 ### É seguro rodar de novo
 

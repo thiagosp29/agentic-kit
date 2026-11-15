@@ -16,6 +16,8 @@ export interface Target {
   readonly id: TargetId;
   readonly label: string;
   readonly supportsGlobal: boolean;
+  /** Pastas usadas por versões antigas do kit, relativas ao diretório base; a CLI avisa se existirem. */
+  readonly legacyContentDirectories: readonly string[];
   layoutFor(scope: InstallScope): TargetLayout;
 }
 
@@ -24,6 +26,7 @@ const TARGETS: Readonly<Record<TargetId, Target>> = {
     id: 'claude',
     label: 'Claude Code — skills e agents em .claude/, instruções em CLAUDE.md',
     supportsGlobal: true,
+    legacyContentDirectories: [],
     layoutFor: (scope) => ({
       contentDirectory: '.claude',
       instructionsFile: scope === 'global' ? '.claude/CLAUDE.md' : 'CLAUDE.md',
@@ -31,9 +34,11 @@ const TARGETS: Readonly<Record<TargetId, Target>> = {
   },
   agents: {
     id: 'agents',
-    label: 'Qualquer IA que lê AGENTS.md (Codex, Copilot, Cursor, Gemini...) — conteúdo em .ai/',
+    label: 'Qualquer IA que lê AGENTS.md (Codex, Copilot, Cursor, Gemini...) — conteúdo em .agents/',
     supportsGlobal: false,
-    layoutFor: () => ({ contentDirectory: '.ai', instructionsFile: 'AGENTS.md' }),
+    // `.agents/skills/` é onde Codex, GitHub Copilot e Cursor procuram skills sem configuração.
+    legacyContentDirectories: ['.ai'],
+    layoutFor: () => ({ contentDirectory: '.agents', instructionsFile: 'AGENTS.md' }),
   },
 };
 
@@ -46,6 +51,15 @@ export function resolveTarget(id: string): Target {
     throw new UsageError(`Destino desconhecido: "${id}". Use um de: ${TARGET_IDS.join(', ')}.`);
   }
   return TARGETS[id];
+}
+
+/** Resolve uma lista de ids (cada um pode ter vários separados por vírgula), sem repetições. */
+export function resolveTargets(values: readonly string[]): Target[] {
+  const ids = values.flatMap((value) => value.split(',')).map((id) => id.trim());
+  if (ids.some((id) => id === '')) {
+    throw new UsageError(`Destino vazio em --target. Use um ou mais de: ${TARGET_IDS.join(', ')}.`);
+  }
+  return [...new Set(ids)].map(resolveTarget);
 }
 
 function isTargetId(id: string): id is TargetId {

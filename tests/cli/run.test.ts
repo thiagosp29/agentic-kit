@@ -55,8 +55,43 @@ describe('run', () => {
       const { context, fs } = createContext();
 
       expect(await run(['install', '-t', 'agents'], context)).toBe(0);
-      expect(fs.contentOf(join(PROJECT_ROOT, '.ai', 'knowledge', 'clean-code.md'))).toBeDefined();
-      expect(fs.contentOf(join(PROJECT_ROOT, 'AGENTS.md'))).toContain('(.ai/knowledge/clean-code.md)');
+      expect(fs.contentOf(join(PROJECT_ROOT, '.agents', 'skills', 'code-review', 'SKILL.md'))).toBeDefined();
+      expect(fs.contentOf(join(PROJECT_ROOT, 'AGENTS.md'))).toContain('(.agents/knowledge/clean-code.md)');
+    });
+
+    it.each([[['-t', 'claude,agents']], [['-t', 'claude', '-t', 'agents']]])(
+      'instala em vários destinos com %j',
+      async (targetArgs) => {
+        const { context, fs } = createContext();
+
+        expect(await run(['install', ...targetArgs], context)).toBe(0);
+        expect(fs.contentOf(join(PROJECT_ROOT, 'CLAUDE.md'))).toBeDefined();
+        expect(fs.contentOf(join(PROJECT_ROOT, 'AGENTS.md'))).toBeDefined();
+      },
+    );
+
+    it('instala uma vez só quando o destino se repete', async () => {
+      const { context, info } = createContext();
+
+      expect(await run(['install', '-t', 'claude,claude'], context)).toBe(0);
+      expect(info.filter((line) => line.startsWith('Instalando'))).toHaveLength(1);
+    });
+
+    it('avisa sobre a pasta .ai/ de instalações antigas', async () => {
+      const { context, info } = createContext({
+        ...validKitFiles(),
+        [join(PROJECT_ROOT, '.ai', 'knowledge', 'clean-code.md')]: 'antigo',
+      });
+
+      expect(await run(['install', '-t', 'agents'], context)).toBe(0);
+      expect(info.join('\n')).toMatch(/Encontrei \.ai\/.*\.agents\//);
+    });
+
+    it('não avisa sobre .ai/ quando a pasta não existe', async () => {
+      const { context, info } = createContext();
+
+      expect(await run(['install', '-t', 'agents'], context)).toBe(0);
+      expect(info.join('\n')).not.toContain('Encontrei');
     });
 
     it('instala globalmente no diretório do usuário', async () => {
@@ -80,6 +115,8 @@ describe('run', () => {
       [['install'], /--target/],
       [['install', '--target', 'gpt'], /Destino desconhecido/],
       [['install', '--target', 'agents', '--global'], /não suporta --global/],
+      [['install', '--target', 'claude,agents', '--global'], /"agents" não suporta --global/],
+      [['install', '--target', 'claude,'], /Destino vazio/],
       [['install', '--target', 'claude', '--global', '--dir', 'x'], /--global ou --dir/],
       [['install', '--target', 'claude', '--unknown'], /unknown/],
     ])('falha com código 2 para %j', async (argv, message) => {

@@ -13,27 +13,29 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 
 ## Tarefas
 
-| #   | Tarefa                                                           | Critério de aceite                                                                                                                           | Status                                           |
-| --- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| 1   | Agentes melhores (`code-reviewer`, `architect`, `test-engineer`) | escopo padrão, "quando entrar em ação", formato de saída fixo, código lido tratado como dado                                                 | feito (PR #6)                                    |
-| 2   | Destino `agents` em `.agents/`                                   | `install -t agents` grava em `.agents/skills/`, `.agents/agents/`, `.agents/knowledge/`; se existir `.ai/` de instalação antiga, a CLI avisa | feito (PR #7)                                    |
-| 3   | Vários destinos num comando                                      | `--target claude,agents` e `-t claude -t agents` instalam nos dois; destino repetido conta uma vez                                           | feito (PR #7)                                    |
-| 4   | Validação conforme Agent Skills                                  | `validate` reprova `name` com mais de 64 caracteres e `description` com mais de 1024                                                         | feito (PR #7)                                    |
-| 5   | Skill `debug`                                                    | procedimento de depuração com reprodução, hipóteses testadas uma a uma, teste que falha antes da correção; aparece no índice                 | feito (PR #7)                                    |
-| 6   | Instalar sem clonar                                              | `npx @thiagosp29/agentic-kit install ...` funciona; o pacote não dispara aviso de script de instalação no npm 11                             | pronto para publicar: falta rodar `publicar.cmd` |
+| #   | Tarefa                                                           | Critério de aceite                                                                                                                           | Status                         |
+| --- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| 1   | Agentes melhores (`code-reviewer`, `architect`, `test-engineer`) | escopo padrão, "quando entrar em ação", formato de saída fixo, código lido tratado como dado                                                 | feito (PR #6)                  |
+| 2   | Destino `agents` em `.agents/`                                   | `install -t agents` grava em `.agents/skills/`, `.agents/agents/`, `.agents/knowledge/`; se existir `.ai/` de instalação antiga, a CLI avisa | feito (PR #7)                  |
+| 3   | Vários destinos num comando                                      | `--target claude,agents` e `-t claude -t agents` instalam nos dois; destino repetido conta uma vez                                           | feito (PR #7)                  |
+| 4   | Validação conforme Agent Skills                                  | `validate` reprova `name` com mais de 64 caracteres e `description` com mais de 1024                                                         | feito (PR #7)                  |
+| 5   | Skill `debug`                                                    | procedimento de depuração com reprodução, hipóteses testadas uma a uma, teste que falha antes da correção; aparece no índice                 | feito (PR #7)                  |
+| 6   | Instalar sem clonar                                              | `npx @thiagosp29/agentic-kit install ...` funciona; o pacote não dispara aviso de script de instalação no npm 11                             | feito (PR #8, 0.2.0 publicada) |
 
 ## Bugs
 
-| #   | Bug                                                       | Correção                                                                                  | Status                |
-| --- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
-| B1  | `-t claude -t agents` instalava só em `agents`, sem aviso | aceitar vários destinos (tarefa 3)                                                        | feito (PR #7)         |
-| B2  | `npx github:...` falha no npm 11                          | publicar no npm como `@thiagosp29/agentic-kit` (o nome `agentic-kit` já é de outro autor) | aguardando publicação |
+| #   | Bug                                                       | Correção                                                                                  | Status                  |
+| --- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------- |
+| B1  | `-t claude -t agents` instalava só em `agents`, sem aviso | aceitar vários destinos (tarefa 3)                                                        | feito (PR #7)           |
+| B2  | `npx github:...` falha no npm 11                          | publicar no npm como `@thiagosp29/agentic-kit` (o nome `agentic-kit` já é de outro autor) | feito (0.2.0 publicada) |
 
 ## Publicação
 
 - O nome `agentic-kit` já existe no npm (outro autor), então o pacote sai como `@thiagosp29/agentic-kit`. O comando instalado continua sendo `agentic-kit`.
 - O script `prepare` foi trocado por `prepack`: o npm 11 trata `prepare` como script de instalação e mostrava aviso a quem instalasse o pacote.
 - `publicar.cmd` (dois cliques) confere o login no npm, atualiza a main, instala as dependências e publica. O `prepublishOnly` roda `check` e `validate:kit` antes.
+- O npm exige 2FA para publicar, e contas novas não podem mais usar app autenticador (TOTP): a confirmação é por passkey (Windows Hello).
+- 0.2.0 publicada em 15/11/2026. Conferido: `npx @thiagosp29/agentic-kit@0.2.0 install -t claude,agents` numa pasta limpa instala os dois destinos.
 
 ## Fora do escopo, e por quê
 

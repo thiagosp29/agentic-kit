@@ -16,14 +16,19 @@ Além disso, a instalação adiciona ao `CLAUDE.md` / `AGENTS.md` um bloco com o
 
 ## Instalação
 
-Requer Node.js 20+.
+Requer Node.js 20+. Sem instalar nada, direto no repositório do seu projeto:
 
 ```bash
-git clone https://github.com/thiagosp29/agentic-kit.git
-cd agentic-kit
-npm install
-npm link        # disponibiliza o comando `agentic-kit` globalmente
+npx @thiagosp29/agentic-kit install --target claude
 ```
+
+Ou instale o comando `agentic-kit` globalmente:
+
+```bash
+npm install -g @thiagosp29/agentic-kit
+```
+
+Para usar a versão em desenvolvimento, clone o repositório e rode `npm install`, `npm run build` e `npm link`.
 
 ## Uso
 

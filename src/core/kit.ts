@@ -42,6 +42,9 @@ const INSTRUCTIONS_FILE = 'instructions.md';
 const SKILL_MANIFEST = 'SKILL.md';
 const MARKDOWN_EXTENSION = '.md';
 const NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+// Limites da especificação Agent Skills (agentskills.io), lida por Claude Code, Codex, Copilot e Cursor.
+const MAX_NAME_LENGTH = 64;
+const MAX_DESCRIPTION_LENGTH = 1024;
 
 interface Candidate {
   readonly kind: KitItemKind;
@@ -131,6 +134,12 @@ async function readItem(root: string, candidate: Candidate, fs: FileSystem): Pro
   if (!NAME_PATTERN.test(name)) {
     return { file: manifest, message: `"name" deve estar em kebab-case (recebido: "${name}").` };
   }
+  if (name.length > MAX_NAME_LENGTH) {
+    return {
+      file: manifest,
+      message: `"name" deve ter até ${MAX_NAME_LENGTH} caracteres (tem ${name.length}).`,
+    };
+  }
   if (name !== expectedName) {
     return {
       file: manifest,
@@ -139,6 +148,13 @@ async function readItem(root: string, candidate: Candidate, fs: FileSystem): Pro
   }
   if (description.trim() === '') {
     return { file: manifest, message: '"description" é obrigatória: é ela que diz à IA quando usar o item.' };
+  }
+
+  if (description.length > MAX_DESCRIPTION_LENGTH) {
+    return {
+      file: manifest,
+      message: `"description" deve ter até ${MAX_DESCRIPTION_LENGTH} caracteres (tem ${description.length}).`,
+    };
   }
 
   return { kind, name, description, manifest, files };

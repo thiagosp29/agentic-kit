@@ -21,7 +21,7 @@ Comandos:
   validate   Valida a estrutura e os manifestos do kit
 
 Opções de install:
-  -t, --target <id>   claude | agents (obrigatório)
+  -t, --target <id>   claude | agents (obrigatório); vários: claude,agents
   -d, --dir <path>    Diretório do projeto (padrão: diretório atual)
   -g, --global        Instala para o usuário (~/.claude); apenas --target claude
   -f, --force         Sobrescreve arquivos do kit alterados localmente
@@ -35,6 +35,7 @@ Opções comuns:
 Exemplos:
   agentic-kit install --target claude
   agentic-kit install --target claude --global
+  agentic-kit install --target claude,agents
   agentic-kit install --target agents --dir ../meu-projeto --dry-run`;
 
 export async function run(argv: string[], context: CliContext): Promise<number> {

@@ -6,11 +6,11 @@ Feito com foco no **Claude Code**, mas funciona com **qualquer IA** que lê `AGE
 
 ## O que vem no kit
 
-| Tipo          | Itens                                                                                    | Para quê                                             |
-| ------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| **Knowledge** | `clean-code`, `solid`, `clean-architecture`, `testing`, `error-handling`, `git-workflow` | Referências que a IA consulta antes de decidir       |
-| **Skills**    | `code-review`, `write-tests`, `debug`, `refactor`, `adr`, `commit-message`               | Procedimentos passo a passo para tarefas específicas |
-| **Agents**    | `code-reviewer`, `test-engineer`, `architect`                                            | Subagentes especializados, com ferramentas limitadas |
+| Tipo          | Itens                                                                                         | Para quê                                             |
+| ------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Knowledge** | `clean-code`, `solid`, `clean-architecture`, `testing`, `error-handling`, `git-workflow`      | Referências que a IA consulta antes de decidir       |
+| **Skills**    | `code-review`, `write-tests`, `debug`, `refactor`, `adr`, `commit-message`, `time-de-produto` | Procedimentos passo a passo para tarefas específicas |
+| **Agents**    | `code-reviewer`, `test-engineer`, `architect`                                                 | Subagentes especializados, com ferramentas limitadas |
 
 Além disso, a instalação adiciona ao `CLAUDE.md` / `AGENTS.md` um bloco com os princípios de trabalho e um índice de tudo o que foi instalado.
 

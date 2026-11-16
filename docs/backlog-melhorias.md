@@ -40,7 +40,7 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 ## Fora do escopo, e por quê
 
 - **Comando `uninstall`:** útil, mas nenhum usuário pediu ainda; o `--dry-run` e os marcadores do bloco já tornam a remoção manual segura.
-- **Instalação seletiva (`--only`):** o kit é pequeno (15 itens); revisitar quando crescer.
+- **Instalação seletiva (`--only`):** o kit é pequeno (16 itens); revisitar quando crescer.
 - **MCP, hooks e permissões:** o kit não tem esse conteúdo; distribuir configuração vazia não ajuda.
 - **Destino `agents` com `--global`:** cada ferramenta lê o `AGENTS.md` global num lugar diferente (`~/.codex/AGENTS.md` etc.); exige um destino por ferramenta.
 - **Avaliação automática dos agentes (evals):** precisa de infraestrutura e de casos de teste próprios; fica para depois.

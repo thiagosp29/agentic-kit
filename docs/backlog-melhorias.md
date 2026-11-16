@@ -36,6 +36,7 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 - `publicar.cmd` (dois cliques) confere o login no npm, atualiza a main, instala as dependências e publica. O `prepublishOnly` roda `check` e `validate:kit` antes.
 - O npm exige 2FA para publicar, e contas novas não podem mais usar app autenticador (TOTP): a confirmação é por passkey (Windows Hello).
 - 0.2.0 publicada em 15/11/2026. Conferido: `npx @thiagosp29/agentic-kit@0.2.0 install -t claude,agents` numa pasta limpa instala os dois destinos.
+- 0.3.0 preparada em 16/11/2026: leva ao npm a skill `time-de-produto` (PR #11), que a 0.2.0 não tem. Falta publicar com `publicar.cmd` depois do merge.
 
 ## Fora do escopo, e por quê
 

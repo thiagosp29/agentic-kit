@@ -1,6 +1,6 @@
 {
   "name": "@thiagosp29/agentic-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Knowledge base, skills e agents para desenvolvimento assistido por IA — foco no Claude Code, compatível com qualquer IA via AGENTS.md.",
   "repository": {
     "type": "git",

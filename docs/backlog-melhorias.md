@@ -24,10 +24,11 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 
 ## Bugs
 
-| #   | Bug                                                       | Correção                                                                                  | Status                  |
-| --- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------- |
-| B1  | `-t claude -t agents` instalava só em `agents`, sem aviso | aceitar vários destinos (tarefa 3)                                                        | feito (PR #7)           |
-| B2  | `npx github:...` falha no npm 11                          | publicar no npm como `@thiagosp29/agentic-kit` (o nome `agentic-kit` já é de outro autor) | feito (0.2.0 publicada) |
+| #   | Bug                                                                                                                  | Correção                                                                                                                                     | Status                              |
+| --- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| B1  | `-t claude -t agents` instalava só em `agents`, sem aviso                                                            | aceitar vários destinos (tarefa 3)                                                                                                           | feito (PR #7)                       |
+| B2  | `npx github:...` falha no npm 11                                                                                     | publicar no npm como `@thiagosp29/agentic-kit` (o nome `agentic-kit` já é de outro autor)                                                    | feito (0.2.0 publicada)             |
+| B3  | Reinstalar não atualizava arquivos de versões antigas do kit: apareciam como "alterados localmente" mesmo sem edição | registro do que foi instalado (`agentic-kit.lock.json`); versões anteriores ao registro reconhecidas por hash; CRLF/LF não conta como edição | corrigido no código, falta publicar |
 
 ## Publicação
 

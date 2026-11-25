@@ -9,7 +9,7 @@ const SECTIONS: ReadonlyArray<{ kind: KitItemKind; title: string; hint: string }
   {
     kind: 'knowledge',
     title: 'Knowledge base',
-    hint: 'Consulte antes de decisões de design ou revisão. Leia apenas o que for relevante para a tarefa.',
+    hint: 'Consulte antes de decisões de design ou revisão. Leia apenas o que for relevante para a tarefa. É a esta lista que `knowledge/<nome>.md` se refere nas skills e agents.',
   },
   {
     kind: 'skill',
@@ -33,6 +33,10 @@ export function renderInstructionsBlock(kit: Kit, layout: TargetLayout): string 
     const items = kit.items.filter((item) => item.kind === kind);
     if (items.length === 0) {
       return '';
+    }
+    if (layout.preloadedKinds.includes(kind)) {
+      const names = items.map((item) => `[\`${item.name}\`](${linkTo(item)})`);
+      return [`### ${title}`, '', `${hint} Disponíveis: ${names.join(', ')}.`].join('\n');
     }
     const lines = items.map((item) => `- [\`${item.name}\`](${linkTo(item)}) — ${item.description}`);
     return [`### ${title}`, '', hint, '', ...lines].join('\n');

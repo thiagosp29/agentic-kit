@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { UsageError } from './errors.js';
 import { HASHES_BEFORE_RECORD } from './hashes-before-record.js';
+import { normalizeLineEndings } from './line-endings.js';
 
 /** Fica no diretório de conteúdo do destino, junto dos arquivos que descreve. */
 export const INSTALL_RECORD_FILE = 'agentic-kit.lock.json';
@@ -12,7 +13,7 @@ const HASH_PATTERN = /^[0-9a-f]{64}$/;
 
 /** Ignora CRLF/LF: o git no Windows troca o fim de linha sem que ninguém tenha editado o arquivo. */
 export function hashContent(content: string): string {
-  return createHash('sha256').update(content.replace(/\r\n/g, '\n')).digest('hex');
+  return createHash('sha256').update(normalizeLineEndings(content)).digest('hex');
 }
 
 /** Indica se `content` é o que o kit instalou, isto é, se pode ser atualizado sem perder edições. */

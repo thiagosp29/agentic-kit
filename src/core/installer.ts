@@ -10,13 +10,14 @@ import {
 } from './install-record.js';
 import { renderInstructionsBlock, upsertBlock } from './instructions.js';
 import type { Kit } from './kit.js';
+import { matchLineEndings, normalizeLineEndings } from './line-endings.js';
 import type { TargetLayout } from './targets.js';
 
 /**
  * - `create`: arquivo novo
  * - `overwrite`: arquivo alterado localmente, substituído por causa de `--force`
  * - `update`: arquivo instalado ou gerado pelo kit, sem edições locais, atualizado
- * - `unchanged`: conteúdo já é idêntico (a menos de CRLF/LF, nos arquivos do kit)
+ * - `unchanged`: conteúdo já é idêntico (a menos de CRLF/LF)
  * - `conflict`: arquivo alterado localmente, mantido (sem `--force`)
  */
 export type OperationAction = 'create' | 'overwrite' | 'update' | 'unchanged' | 'conflict';
@@ -61,20 +62,12 @@ export async function planInstall(request: InstallRequest, fs: FileSystem): Prom
   }
 
   const recordContent = renderInstallRecord(nextRecord);
-  operations.push({
-    action: actionForGeneratedFile(currentRecord, recordContent),
-    destination: recordPath,
-    content: recordContent,
-  });
+  operations.push(operationForGeneratedFile(recordPath, currentRecord, recordContent));
 
   const instructionsPath = join(baseDirectory, layout.instructionsFile);
   const currentInstructions = await readIfExists(instructionsPath, fs);
   const instructions = upsertBlock(currentInstructions, renderInstructionsBlock(kit, layout));
-  operations.push({
-    action: actionForGeneratedFile(currentInstructions, instructions),
-    destination: instructionsPath,
-    content: instructions,
-  });
+  operations.push(operationForGeneratedFile(instructionsPath, currentInstructions, instructions));
 
   return operations;
 }
@@ -99,9 +92,18 @@ function actionForKitFile(
   return force ? 'overwrite' : 'conflict';
 }
 
-function actionForGeneratedFile(current: string | undefined, content: string): OperationAction {
-  if (current === undefined) return 'create';
-  return current === content ? 'unchanged' : 'update';
+function operationForGeneratedFile(
+  destination: string,
+  current: string | undefined,
+  content: string,
+): FileOperation {
+  if (current === undefined) return { action: 'create', destination, content };
+  const isUnchanged = normalizeLineEndings(current) === normalizeLineEndings(content);
+  return {
+    action: isUnchanged ? 'unchanged' : 'update',
+    destination,
+    content: matchLineEndings(content, current),
+  };
 }
 
 async function readIfExists(path: string, fs: FileSystem): Promise<string | undefined> {

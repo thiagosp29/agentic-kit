@@ -26,7 +26,7 @@ description: O que faz e QUANDO usar. A IA decide usar o item a partir desta fra
 ---
 ```
 
-Agents podem declarar também `tools:` (ex.: `Read, Grep, Glob`) para limitar o que o subagente pode fazer no Claude Code.
+Agents podem declarar também `tools:` (ex.: `Read, Grep, Glob`) para limitar o que o subagente pode fazer no Claude Code, e `skills:` (lista com um `- nome` por linha) para pré-carregar skills. O `validate` não confere esses dois campos; para o kit deste repositório, os testes conferem `skills:`.
 
 Boas práticas para o conteúdo:
 

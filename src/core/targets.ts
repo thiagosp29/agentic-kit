@@ -1,4 +1,5 @@
 import { UsageError } from './errors.js';
+import type { KitItemKind } from './kit.js';
 
 export const TARGET_IDS = ['claude', 'agents'] as const;
 export type TargetId = (typeof TARGET_IDS)[number];
@@ -10,6 +11,8 @@ export type InstallScope = 'project' | 'global';
 export interface TargetLayout {
   readonly contentDirectory: string;
   readonly instructionsFile: string;
+  /** Tipos cujas descrições a ferramenta já carrega sozinha; o índice não as repete. */
+  readonly preloadedKinds: readonly KitItemKind[];
 }
 
 export interface Target {
@@ -30,6 +33,7 @@ const TARGETS: Readonly<Record<TargetId, Target>> = {
     layoutFor: (scope) => ({
       contentDirectory: '.claude',
       instructionsFile: scope === 'global' ? '.claude/CLAUDE.md' : 'CLAUDE.md',
+      preloadedKinds: ['skill', 'agent'],
     }),
   },
   agents: {
@@ -38,7 +42,7 @@ const TARGETS: Readonly<Record<TargetId, Target>> = {
     supportsGlobal: false,
     // `.agents/skills/` é onde Codex, GitHub Copilot e Cursor procuram skills sem configuração.
     legacyContentDirectories: ['.ai'],
-    layoutFor: () => ({ contentDirectory: '.agents', instructionsFile: 'AGENTS.md' }),
+    layoutFor: () => ({ contentDirectory: '.agents', instructionsFile: 'AGENTS.md', preloadedKinds: [] }),
   },
 };
 

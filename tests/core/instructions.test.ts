@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BLOCK_END, BLOCK_START, renderInstructionsBlock, upsertBlock } from '../../src/core/instructions.js';
 import type { Kit } from '../../src/core/kit.js';
+import { resolveTarget } from '../../src/core/targets.js';
 
 const kit: Kit = {
   root: '/kit',
@@ -28,6 +29,7 @@ describe('renderInstructionsBlock', () => {
     const block = renderInstructionsBlock(kit, {
       contentDirectory: '.claude',
       instructionsFile: 'CLAUDE.md',
+      preloadedKinds: [],
     });
 
     expect(block.startsWith(BLOCK_START)).toBe(true);
@@ -42,9 +44,36 @@ describe('renderInstructionsBlock', () => {
     const block = renderInstructionsBlock(kit, {
       contentDirectory: '.claude',
       instructionsFile: '.claude/CLAUDE.md',
+      preloadedKinds: [],
     });
 
     expect(block).toContain('(knowledge/testing.md)');
+  });
+});
+
+describe('renderInstructionsBlock com descrições já carregadas pela ferramenta', () => {
+  it('lista só o nome e o link desses itens e mantém a descrição dos demais', () => {
+    const block = renderInstructionsBlock(kit, {
+      contentDirectory: '.claude',
+      instructionsFile: 'CLAUDE.md',
+      preloadedKinds: ['skill'],
+    });
+
+    expect(block).toContain('[`adr`](.claude/skills/adr/SKILL.md)');
+    expect(block).not.toContain('Escreve ADRs.');
+    expect(block).toContain('— Testes.');
+  });
+});
+
+describe('índice por destino', () => {
+  it('mantém as descrições de skills no AGENTS.md', () => {
+    const block = renderInstructionsBlock(kit, resolveTarget('agents').layoutFor('project'));
+    expect(block).toContain('Escreve ADRs.');
+  });
+
+  it.each(['project', 'global'] as const)('omite as descrições de skills no CLAUDE.md (%s)', (scope) => {
+    const block = renderInstructionsBlock(kit, resolveTarget('claude').layoutFor(scope));
+    expect(block).not.toContain('Escreve ADRs.');
   });
 });
 

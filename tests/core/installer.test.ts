@@ -4,7 +4,7 @@ import { applyPlan, planInstall } from '../../src/core/installer.js';
 import { INSTALL_RECORD_FILE } from '../../src/core/install-record.js';
 import { loadKit } from '../../src/core/kit.js';
 import { resolveTarget } from '../../src/core/targets.js';
-import { KIT_ROOT, PROJECT_ROOT, validKitFiles } from '../support/fixtures.js';
+import { KIT_ROOT, manifest, PROJECT_ROOT, validKitFiles } from '../support/fixtures.js';
 import { MemoryFileSystem } from '../support/memory-file-system.js';
 
 const claudeLayout = resolveTarget('claude').layoutFor('project');
@@ -23,6 +23,8 @@ async function setup(existingFiles: Record<string, string> = {}) {
   return { fs, kit, install };
 }
 
+const instructionsPath = join(PROJECT_ROOT, 'CLAUDE.md');
+const toCrlf = (content: string) => content.replace(/\r?\n/g, '\r\n');
 const actionFor = (plan: Awaited<ReturnType<typeof planInstall>>, destination: string) =>
   plan.find((operation) => operation.destination === destination)?.action;
 
@@ -110,6 +112,52 @@ describe('planInstall + applyPlan', () => {
     expect(actionFor(await install(), skillDestination)).toBe('update');
   });
 
+  it('não altera nada quando o git converteu toda a instalação para CRLF', async () => {
+    const { fs, install } = await setup({ [instructionsPath]: '# Regras do meu time\n' });
+    const destinations = (await install()).map((operation) => operation.destination);
+    for (const destination of destinations) {
+      await fs.writeFile(destination, toCrlf(fs.contentOf(destination) ?? ''));
+    }
+
+    const plan = await install();
+
+    expect(new Set(plan.map((operation) => operation.action))).toEqual(new Set(['unchanged']));
+  });
+
+  it('mantém CRLF ao atualizar o arquivo de instruções e o registro', async () => {
+    const { fs, install } = await setup({ [instructionsPath]: '# Regras do meu time\n' });
+    await install();
+    for (const path of [instructionsPath, recordPath]) {
+      await fs.writeFile(path, toCrlf(fs.contentOf(path) ?? ''));
+    }
+    await fs.writeFile(skillSource, manifest('code-review', 'Descrição nova.'));
+    await fs.writeFile(join(KIT_ROOT, 'instructions.md'), '### Princípios novos');
+    const { kit } = await loadKit(KIT_ROOT, fs);
+
+    const plan = await planInstall(
+      { kit, layout: claudeLayout, baseDirectory: PROJECT_ROOT, force: false },
+      fs,
+    );
+    await applyPlan(plan, fs);
+
+    for (const path of [instructionsPath, recordPath]) {
+      expect(actionFor(plan, path)).toBe('update');
+      expect(fs.contentOf(path)).not.toMatch(/(?<!\r)\n/);
+    }
+    expect(fs.contentOf(instructionsPath)).toContain('# Regras do meu time\r\n');
+    expect(fs.contentOf(instructionsPath)).toContain('### Princípios novos\r\n');
+  });
+
+  it('não converte as linhas do usuário num arquivo de instruções com fins de linha misturados', async () => {
+    const { fs, install } = await setup({ [instructionsPath]: 'linha CRLF\r\nlinha LF\n' });
+
+    await install();
+
+    expect(fs.contentOf(instructionsPath)).toMatch(/^linha CRLF\r\nlinha LF\n\n<!-- agentic-kit:start -->/);
+    const plan = await install();
+    expect(actionFor(plan, instructionsPath)).toBe('unchanged');
+  });
+
   it('passa a registrar arquivos já idênticos de uma instalação sem registro', async () => {
     const source = validKitFiles()[skillSource] ?? '';
     const { fs, install } = await setup({ [skillDestination]: source });
@@ -141,7 +189,6 @@ describe('planInstall + applyPlan', () => {
   );
 
   it('preserva o conteúdo do usuário no arquivo de instruções', async () => {
-    const instructionsPath = join(PROJECT_ROOT, 'CLAUDE.md');
     const { fs, install } = await setup({ [instructionsPath]: '# Regras do meu time\n' });
 
     const plan = await install();

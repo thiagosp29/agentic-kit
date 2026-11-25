@@ -60,6 +60,7 @@ Codex, GitHub Copilot e Cursor encontram as skills em `.agents/skills/` sem conf
 ### É seguro rodar de novo
 
 - Arquivos idênticos são ignorados.
+- Arquivos do kit que você não alterou são atualizados para a versão nova. O registro do que foi instalado fica em `agentic-kit.lock.json`, dentro de `.claude/` ou `.agents/`; se você versiona essa pasta, versione o registro junto.
 - Arquivos do kit que você alterou localmente **não** são sobrescritos (aparecem como conflito) — use `--force` se quiser substituí-los.
 - No `CLAUDE.md` / `AGENTS.md`, só o bloco entre `<!-- agentic-kit:start -->` e `<!-- agentic-kit:end -->` é atualizado. O resto do arquivo é seu.
 

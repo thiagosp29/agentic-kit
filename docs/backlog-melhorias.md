@@ -40,7 +40,7 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 - 0.3.0 publicada em 16/11/2026: leva ao npm a skill `time-de-produto` (PR #11), que a 0.2.0 não tem. Conferido: `npx @thiagosp29/agentic-kit@0.3.0 install -t claude,agents` numa pasta limpa instala a skill nos dois destinos.
 - 0.4.0 publicada em 25/11/2026: leva ao npm a correção do falso conflito na reinstalação (PR #15).
 - 0.5.0 publicada em 25/11/2026: leva ao npm o kit ampliado (PR #17). Conferido: `npx @thiagosp29/agentic-kit@0.5.0 install -t claude,agents` numa pasta limpa instala os dois destinos, e a atualização da 0.4.0 preserva arquivo editado. Detalhes em `docs/backlog-kit-ampliado.md`.
-- 0.5.1 preparada em 25/11/2026, ainda não publicada: leva ao npm a correção da reinstalação em CRLF (PR #20).
+- 0.5.1 publicada em 25/11/2026: leva ao npm a correção da reinstalação em CRLF (PR #20). Conferido com o pacote do npm: instalação limpa nos dois destinos, e uma 0.5.0 toda em CRLF reinstalada sem mudar nenhum byte.
 - O token do `npm login` expira: a primeira tentativa da 0.3.0 parou no `npm whoami` com 401. Se o `publicar.cmd` falhar nesse passo, rode `npm login` e tente de novo.
 
 ## Fora do escopo, e por quê

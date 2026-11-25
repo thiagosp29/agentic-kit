@@ -24,11 +24,11 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 
 ## Bugs
 
-| #   | Bug                                                                                                                  | Correção                                                                                                                                     | Status                                 |
-| --- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| B1  | `-t claude -t agents` instalava só em `agents`, sem aviso                                                            | aceitar vários destinos (tarefa 3)                                                                                                           | feito (PR #7)                          |
-| B2  | `npx github:...` falha no npm 11                                                                                     | publicar no npm como `@thiagosp29/agentic-kit` (o nome `agentic-kit` já é de outro autor)                                                    | feito (0.2.0 publicada)                |
-| B3  | Reinstalar não atualizava arquivos de versões antigas do kit: apareciam como "alterados localmente" mesmo sem edição | registro do que foi instalado (`agentic-kit.lock.json`); versões anteriores ao registro reconhecidas por hash; CRLF/LF não conta como edição | feito (PR #15), falta publicar a 0.4.0 |
+| #   | Bug                                                                                                                  | Correção                                                                                                                                     | Status                          |
+| --- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| B1  | `-t claude -t agents` instalava só em `agents`, sem aviso                                                            | aceitar vários destinos (tarefa 3)                                                                                                           | feito (PR #7)                   |
+| B2  | `npx github:...` falha no npm 11                                                                                     | publicar no npm como `@thiagosp29/agentic-kit` (o nome `agentic-kit` já é de outro autor)                                                    | feito (0.2.0 publicada)         |
+| B3  | Reinstalar não atualizava arquivos de versões antigas do kit: apareciam como "alterados localmente" mesmo sem edição | registro do que foi instalado (`agentic-kit.lock.json`); versões anteriores ao registro reconhecidas por hash; CRLF/LF não conta como edição | feito (PR #15, 0.4.0 publicada) |
 
 ## Publicação
 
@@ -38,7 +38,8 @@ Projetos comparados: [ruler](https://github.com/intellectronica/ruler), [rulesyn
 - O npm exige 2FA para publicar, e contas novas não podem mais usar app autenticador (TOTP): a confirmação é por passkey (Windows Hello).
 - 0.2.0 publicada em 15/11/2026. Conferido: `npx @thiagosp29/agentic-kit@0.2.0 install -t claude,agents` numa pasta limpa instala os dois destinos.
 - 0.3.0 publicada em 16/11/2026: leva ao npm a skill `time-de-produto` (PR #11), que a 0.2.0 não tem. Conferido: `npx @thiagosp29/agentic-kit@0.3.0 install -t claude,agents` numa pasta limpa instala a skill nos dois destinos.
-- 0.4.0 preparada em 25/11/2026, ainda não publicada: leva ao npm a correção do falso conflito na reinstalação (PR #15).
+- 0.4.0 publicada em 25/11/2026: leva ao npm a correção do falso conflito na reinstalação (PR #15).
+- 0.5.0 preparada em 25/11/2026, ainda não publicada: leva ao npm o kit ampliado (PR #17). Detalhes em `docs/backlog-kit-ampliado.md`.
 - O token do `npm login` expira: a primeira tentativa da 0.3.0 parou no `npm whoami` com 401. Se o `publicar.cmd` falhar nesse passo, rode `npm login` e tente de novo.
 
 ## Fora do escopo, e por quê

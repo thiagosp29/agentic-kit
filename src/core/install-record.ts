@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { UsageError } from './errors.js';
+import { HASHES_BEFORE_RECORD } from './hashes-before-record.js';
 
 /** Fica no diretório de conteúdo do destino, junto dos arquivos que descreve. */
 export const INSTALL_RECORD_FILE = 'agentic-kit.lock.json';
@@ -9,16 +10,6 @@ export type InstallRecord = ReadonlyMap<string, string>;
 
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
 
-/**
- * Versões antigas distribuídas antes de existir o registro de instalação. A lista é fechada: o que
- * for instalado daqui em diante fica no registro.
- */
-const HASHES_BEFORE_RECORD: ReadonlyMap<string, string> = new Map([
-  ['agents/architect.md', '6e89cee2172eebe7c765fdc80d8682bf95287665e39abfb7268f768d69860273'],
-  ['agents/code-reviewer.md', 'aa8eef71347088fe949964e7544ad809c593da20a5ae186aa37317dd62fb3843'],
-  ['agents/test-engineer.md', 'ecdb976e18a5bdb605a7da22638b2e01c0dd3453024e0b4d163a4dac09669098'],
-]);
-
 /** Ignora CRLF/LF: o git no Windows troca o fim de linha sem que ninguém tenha editado o arquivo. */
 export function hashContent(content: string): string {
   return createHash('sha256').update(content.replace(/\r\n/g, '\n')).digest('hex');
@@ -27,7 +18,7 @@ export function hashContent(content: string): string {
 /** Indica se `content` é o que o kit instalou, isto é, se pode ser atualizado sem perder edições. */
 export function isPristine(file: string, content: string, record: InstallRecord): boolean {
   const hash = hashContent(content);
-  return record.get(file) === hash || HASHES_BEFORE_RECORD.get(file) === hash;
+  return record.get(file) === hash || (HASHES_BEFORE_RECORD.get(file)?.includes(hash) ?? false);
 }
 
 export function parseInstallRecord(source: string, path: string): InstallRecord {

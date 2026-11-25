@@ -84,10 +84,10 @@ Diga ao usuário qual ciclo escolheu e por quê, numa frase.
 
 Quem escreveu o código não deve ser o único a conferi-lo.
 
-1. Se a ferramenta tiver subagentes, peça ao `code-reviewer` uma revisão do diff da branch e ao `test-engineer` as lacunas de teste. Sem subagentes, siga a skill `code-review` relendo o diff inteiro como se fosse de outra pessoa.
+1. Se a ferramenta tiver subagentes, peça ao `code-reviewer` uma revisão do diff da branch, ao `test-engineer` as lacunas de teste e ao `qa-verifier` a conferência dos critérios; acrescente o `ux-reviewer` se a interface mudou e o `security-auditor` se a mudança for sensível. Sem subagentes, siga a skill `code-review` relendo o diff inteiro como se fosse de outra pessoa.
 2. Refaça as capturas das páginas principais (home, login, páginas alteradas, 404) em computador e celular.
 3. Confira cada critério de aceite do backlog, um por um.
-4. Cada problema: teste que falha → correção → linha na tabela de bugs do backlog.
+4. Passe pela skill `verify-done`. Cada problema: teste que falha → correção → linha na tabela de bugs do backlog.
 
 **Pronto quando:** a revisão não deixou achado sem resposta e todo critério de aceite foi conferido.
 

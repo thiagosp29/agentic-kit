@@ -6,13 +6,16 @@ Feito com foco no **Claude Code**, mas funciona com **qualquer IA** que lê `AGE
 
 ## O que vem no kit
 
-| Tipo          | Itens                                                                                         | Para quê                                             |
-| ------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| **Knowledge** | `clean-code`, `solid`, `clean-architecture`, `testing`, `error-handling`, `git-workflow`      | Referências que a IA consulta antes de decidir       |
-| **Skills**    | `code-review`, `write-tests`, `debug`, `refactor`, `adr`, `commit-message`, `time-de-produto` | Procedimentos passo a passo para tarefas específicas |
-| **Agents**    | `code-reviewer`, `test-engineer`, `architect`                                                 | Subagentes especializados, com ferramentas limitadas |
+| Tipo                            | Itens                                                                                                                                                                                                    | Para quê                                             |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Knowledge**                   | `clean-code`, `solid`, `clean-architecture`, `testing`, `error-handling`, `git-workflow`, `security`, `privacy-lgpd`, `accessibility`, `performance`, `api-design`, `database`, `observability`, `ci-cd` | Referências que a IA consulta antes de decidir       |
+| **Skills: da ideia ao plano**   | `project-setup`, `spec`, `implementation-plan`, `adr`                                                                                                                                                    | Adaptar ao projeto, entender o pedido e planejar     |
+| **Skills: código**              | `write-tests`, `debug`, `refactor`, `performance-tuning`, `dependency-update`                                                                                                                            | Construir, corrigir e manter                         |
+| **Skills: qualidade e entrega** | `code-review`, `security-audit`, `verify-done`, `commit-message`, `pull-request`, `review-feedback`, `release`                                                                                           | Provar que está pronto e entregar                    |
+| **Skills: condução**            | `time-de-produto`, `handoff`                                                                                                                                                                             | Ciclo completo por papéis e troca de sessão          |
+| **Agents**                      | `architect`, `test-engineer`, `code-reviewer`, `qa-verifier`, `security-auditor`, `ux-reviewer`, `performance-analyst`                                                                                   | Subagentes especializados, com ferramentas limitadas |
 
-Além disso, a instalação adiciona ao `CLAUDE.md` / `AGENTS.md` um bloco com os princípios de trabalho e um índice de tudo o que foi instalado.
+Além disso, a instalação adiciona ao `CLAUDE.md` / `AGENTS.md` um bloco com os princípios de trabalho e um índice do que foi instalado. No Claude Code, que já carrega as descrições de skills e agents, o índice traz só os nomes deles, para economizar contexto.
 
 ## Instalação
 
@@ -29,6 +32,12 @@ npm install -g @thiagosp29/agentic-kit
 ```
 
 Para usar a versão em desenvolvimento, clone o repositório e rode `npm install`, `npm run build` e `npm link`.
+
+## Primeiros passos num projeto
+
+1. Instale o kit na raiz do projeto.
+2. Peça à IA: "use a skill project-setup". Ela roda os comandos seguros, registra stack, convenções e limites no `CLAUDE.md` ou `AGENTS.md`, fora do bloco do kit.
+3. Trabalhe normalmente. O bloco instalado indica qual skill cabe em cada momento; tarefas pequenas não passam pelo fluxo inteiro.
 
 ## Uso
 
